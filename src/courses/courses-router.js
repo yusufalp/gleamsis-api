@@ -10,7 +10,7 @@ const serializeCourse = course => ({
   id: course.id,
   name: xss(course.name),
   category: xss(course.category),
-  teacherId: course.teacherId
+  teacherId: course.teacher_id
 })
 
 coursesRouter

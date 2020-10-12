@@ -8,9 +8,9 @@ const jsonParser = express.json();
 
 const serializeStudent = student => ({
   id: student.id,
-  firstName: xss(student.firstName),
-  lastName: xss(student.lastName),
-  courseId: student.courseId,
+  firstName: xss(student.first_name),
+  lastName: xss(student.last_name),
+  courseId: student.course_id,
   grade: student.grade
 })
 
