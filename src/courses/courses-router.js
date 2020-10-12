@@ -10,7 +10,7 @@ const serializeCourse = course => ({
   id: course.id,
   name: xss(course.name),
   category: xss(course.category),
-  teacherId: course.teacher_id
+  teacher_id: course.teacher_id
 })
 
 coursesRouter
@@ -21,6 +21,22 @@ coursesRouter
     )
       .then(courses => {
         res.json(courses.map(serializeCourse))
+      })
+      .catch(next)
+  })
+  .post(jsonParser, (req, res, next) => {
+    const { name, category, teacher_id } = req.body
+    const newCourses = { name, category, teacher_id }
+
+    CoursesService.insertCourse(
+      req.app.get('db'),
+      newCourses
+    )
+      .then(course => {
+        res
+          .status(201)
+          .location(path.posix.join(req.originalUrl, `${course.id}`))
+          .json(serializeCourse(course))
       })
       .catch(next)
   })

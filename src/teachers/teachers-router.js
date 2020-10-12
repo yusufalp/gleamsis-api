@@ -23,5 +23,21 @@ teachersRouter
       })
       .catch(next)
   })
+  .post(jsonParser, (req, res, next) => {
+    const { first_name, last_name } = req.body
+    const newTeacher = { first_name, last_name }
+
+    TeachersService.insertTeacher(
+      req.app.get('db'),
+      newTeacher
+    )
+      .then(teacher => {
+        res
+          .status(201)
+          .location(path.posix.join(req.originalUrl, `${teacher.id}`))
+          .json(serializeTeacher(teacher))
+      })
+      .catch(next)
+  })
 
 module.exports = teachersRouter;

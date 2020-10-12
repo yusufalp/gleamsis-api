@@ -10,7 +10,7 @@ const serializeStudent = student => ({
   id: student.id,
   firstName: xss(student.first_name),
   lastName: xss(student.last_name),
-  courseId: student.course_id,
+  course_id: student.course_id,
   grade: student.grade
 })
 
@@ -22,6 +22,22 @@ studentsRouter
     )
       .then(students => {
         res.json(students.map(serializeStudent))
+      })
+      .catch(next)
+  })
+  .post(jsonParser, (req, res, next) => {
+    const { first_name, last_name, course_id, grade } = req.body
+    const newStudent = { first_name, last_name, course_id, grade }
+
+    StudentsService.insertStudent(
+      req.app.get('db'),
+      newStudent
+    )
+      .then(student => {
+        res
+          .status(201)
+          .location(path.posix.join(req.originalUrl, `${student.id}`))
+          .json(serializeStudent(student))
       })
       .catch(next)
   })
