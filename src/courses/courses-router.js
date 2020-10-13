@@ -41,4 +41,36 @@ coursesRouter
       .catch(next)
   })
 
+coursesRouter
+  .route('/:id')
+  .all((req, res, next) => {
+    CoursesService.getCourseById(
+      req.app.get('db'),
+      req.params.id
+    )
+      .then(course => {
+        if (!course) {
+          return res.status(404).json({
+            error: { message: 'Course does not exist' }
+          })
+        }
+        res.course = course
+        next()
+      })
+      .catch(next)
+  })
+  .get((req, res, next) => {
+    res.json(serializeCourse(res.course))
+  })
+  .delete((req, res, next) => {
+    CoursesService.deleteCourse(
+      req.app.get('db'),
+      req.params.id
+    )
+      .then(() => {
+        res.status(204).end()
+      })
+      .catch(next)
+  })
+
 module.exports = coursesRouter;

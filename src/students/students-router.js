@@ -42,4 +42,35 @@ studentsRouter
       .catch(next)
   })
 
+studentsRouter
+  .route('/:id')
+  .all((req, res, next) => {
+    StudentsService.getStudentById(
+      req.app.get('db'),
+      req.params.id
+    )
+      .then(student => {
+        if (!student) {
+          return res.status(404).json({
+            error: { message: 'Student does not exist' }
+          })
+        }
+        res.student = student
+        next()
+      })
+      .catch(next)
+  })
+  .get((req, res, next) => {
+    res.json(serializeStudent(res.student))
+  })
+  .delete((req, res, next) => {
+    StudentsService.deleteStudent(
+      req.app.get('db'),
+      req.params.id
+    )
+      .then(() => {
+        res.status(204).end()
+      })
+      .catch(next)
+  })
 module.exports = studentsRouter;

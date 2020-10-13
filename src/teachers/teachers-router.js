@@ -40,4 +40,36 @@ teachersRouter
       .catch(next)
   })
 
+teachersRouter
+  .route('/:id')
+  .all((req, res, next) => {
+    TeachersService.getTeacherById(
+      req.app.get('db'),
+      req.params.id
+    )
+      .then(teacher => {
+        if (!teacher) {
+          return res.status(404).json({
+            error: { message: 'Teacher does not exist' }
+          })
+        }
+        res.teacher = teacher
+        next()
+      })
+      .catch(next)
+  })
+  .get((req, res, next) => {
+    res.json(serializeTeacher(res.teacher))
+  })
+  .delete((req, res, next) => {
+    TeachersService.deleteTeacher(
+      req.app.get('db'),
+      req.params.id
+    )
+      .then(() => {
+        res.status(204).end()
+      })
+      .catch(next)
+  })
+
 module.exports = teachersRouter;
