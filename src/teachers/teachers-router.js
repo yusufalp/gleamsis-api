@@ -8,8 +8,8 @@ const jsonParser = express.json()
 
 const serializeTeacher = teacher => ({
   id: teacher.id,
-  firstName: xss(teacher.first_name),
-  lastName: xss(teacher.last_name)
+  first_name: xss(teacher.first_name),
+  last_name: xss(teacher.last_name)
 })
 
 teachersRouter
