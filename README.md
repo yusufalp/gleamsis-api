@@ -1,12 +1,26 @@
 # GleamSIS
 
-This is a student information systems project.
+This is an API for the GleamSIS app. 
 
-## Scripts
+Live demo can be access at [gleamsis.vercel.app](https://gleamsis.vercel.app/)
 
-Start the application `npm start`
+## API Documentation
 
-Start nodemon for the application `npm run dev`
+There are three different API endpoints. 
 
-Run the tests `npm test`
+[https://shielded-meadow-94057.herokuapp.com/api/students](https://shielded-meadow-94057.herokuapp.com/api/students)
 
+[https://shielded-meadow-94057.herokuapp.com/api/teachers](https://shielded-meadow-94057.herokuapp.com/api/teachers)
+
+and 
+
+[https://shielded-meadow-94057.herokuapp.com/api/courses](https://shielded-meadow-94057.herokuapp.com/api/courses)
+
+All API access is over HTTPS and all data is sent and received as JSON.
+
+## Technologies Used
+React, Node, Express, PostgreSQL
+
+API is hosted on Heroku
+
+Live web is hosted on Vercel
