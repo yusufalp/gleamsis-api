@@ -1,6 +1,6 @@
-const { expect } = require('chai');
-const knex = require('knex');
-const app = require('../src/app');
+const { expect } = require('chai')
+const knex = require('knex')
+const app = require('../src/app')
 
 describe('Teachers endpoint', () => {
   before('connecting to the database', () => {

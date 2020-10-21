@@ -1,7 +1,7 @@
-const express = require('express');
-const TeachersService = require('./teachers-service');
-const path = require('path');
-const xss = require('xss');
+const express = require('express')
+const TeachersService = require('./teachers-service')
+const path = require('path')
+const xss = require('xss')
 
 const teachersRouter = express.Router()
 const jsonParser = express.json()
@@ -72,4 +72,4 @@ teachersRouter
       .catch(next)
   })
 
-module.exports = teachersRouter;
+module.exports = teachersRouter

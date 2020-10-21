@@ -32,4 +32,4 @@ const CoursesService = {
   }
 }
 
-module.exports = CoursesService;
+module.exports = CoursesService

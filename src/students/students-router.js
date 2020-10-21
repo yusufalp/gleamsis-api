@@ -1,10 +1,10 @@
-const express = require('express');
-const StudentsService = require('./students-service');
-const path = require('path');
-const xss = require('xss');
+const express = require('express')
+const StudentsService = require('./students-service')
+const path = require('path')
+const xss = require('xss')
 
-const studentsRouter = express.Router();
-const jsonParser = express.json();
+const studentsRouter = express.Router()
+const jsonParser = express.json()
 
 const serializeStudent = student => ({
   id: student.id,
@@ -73,4 +73,4 @@ studentsRouter
       })
       .catch(next)
   })
-module.exports = studentsRouter;
+module.exports = studentsRouter
