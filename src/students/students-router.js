@@ -2,6 +2,7 @@ const express = require('express')
 const StudentsService = require('./students-service')
 const path = require('path')
 const xss = require('xss')
+const { requireAuth } = require('../middleware/basic-auth')
 
 const studentsRouter = express.Router()
 const jsonParser = express.json()
@@ -25,7 +26,7 @@ studentsRouter
       })
       .catch(next)
   })
-  .post(jsonParser, (req, res, next) => {
+  .post(requireAuth, jsonParser, (req, res, next) => {
     const { first_name, last_name, course_id, grade } = req.body
     const newStudent = { first_name, last_name, course_id, grade }
 
@@ -44,6 +45,7 @@ studentsRouter
 
 studentsRouter
   .route('/:id')
+  .all(requireAuth)
   .all((req, res, next) => {
     StudentsService.getStudentById(
       req.app.get('db'),

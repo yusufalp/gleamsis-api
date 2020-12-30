@@ -2,6 +2,7 @@ const express = require('express')
 const TeachersService = require('./teachers-service')
 const path = require('path')
 const xss = require('xss')
+const { requireAuth } = require('../middleware/basic-auth')
 
 const teachersRouter = express.Router()
 const jsonParser = express.json()
@@ -23,7 +24,7 @@ teachersRouter
       })
       .catch(next)
   })
-  .post(jsonParser, (req, res, next) => {
+  .post(requireAuth, jsonParser, (req, res, next) => {
     const { first_name, last_name } = req.body
     const newTeacher = { first_name, last_name }
 
@@ -42,6 +43,7 @@ teachersRouter
 
 teachersRouter
   .route('/:id')
+  .all(requireAuth)
   .all((req, res, next) => {
     TeachersService.getTeacherById(
       req.app.get('db'),
