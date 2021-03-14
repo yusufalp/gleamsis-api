@@ -1,11 +1,10 @@
-const express = require('express')
-const StudentsService = require('./students-service')
-const path = require('path')
-const xss = require('xss')
-const { requireAuth } = require('../middleware/basic-auth')
+const express = require('express');
+const StudentsService = require('./students-service');
+const path = require('path');
+const xss = require('xss');
 
-const studentsRouter = express.Router()
-const jsonParser = express.json()
+const studentsRouter = express.Router();
+const jsonParser = express.json();
 
 const serializeStudent = student => ({
   id: student.id,
@@ -26,7 +25,7 @@ studentsRouter
       })
       .catch(next)
   })
-  .post(requireAuth, jsonParser, (req, res, next) => {
+  .post(jsonParser, (req, res, next) => {
     const { first_name, last_name, course_id, grade } = req.body
     const newStudent = { first_name, last_name, course_id, grade }
 
@@ -41,11 +40,10 @@ studentsRouter
           .json(serializeStudent(student))
       })
       .catch(next)
-  })
+  });
 
 studentsRouter
   .route('/:id')
-  .all(requireAuth)
   .all((req, res, next) => {
     StudentsService.getStudentById(
       req.app.get('db'),
@@ -74,5 +72,6 @@ studentsRouter
         res.status(204).end()
       })
       .catch(next)
-  })
-module.exports = studentsRouter
+  });
+
+module.exports = studentsRouter;

@@ -1,17 +1,16 @@
-const express = require('express')
-const TeachersService = require('./teachers-service')
-const path = require('path')
-const xss = require('xss')
-const { requireAuth } = require('../middleware/basic-auth')
+const express = require('express');
+const TeachersService = require('./teachers-service');
+const path = require('path');
+const xss = require('xss');
 
-const teachersRouter = express.Router()
-const jsonParser = express.json()
+const teachersRouter = express.Router();
+const jsonParser = express.json();
 
 const serializeTeacher = teacher => ({
   id: teacher.id,
   first_name: xss(teacher.first_name),
   last_name: xss(teacher.last_name)
-})
+});
 
 teachersRouter
   .route('/')
@@ -24,7 +23,7 @@ teachersRouter
       })
       .catch(next)
   })
-  .post(requireAuth, jsonParser, (req, res, next) => {
+  .post(jsonParser, (req, res, next) => {
     const { first_name, last_name } = req.body
     const newTeacher = { first_name, last_name }
 
@@ -39,11 +38,10 @@ teachersRouter
           .json(serializeTeacher(teacher))
       })
       .catch(next)
-  })
+  });
 
 teachersRouter
   .route('/:id')
-  .all(requireAuth)
   .all((req, res, next) => {
     TeachersService.getTeacherById(
       req.app.get('db'),
@@ -72,6 +70,6 @@ teachersRouter
         res.status(204).end()
       })
       .catch(next)
-  })
+  });
 
-module.exports = teachersRouter
+module.exports = teachersRouter;
