@@ -1,22 +1,22 @@
-const { expect } = require('chai')
-const knex = require('knex')
-const app = require('../src/app')
+const { expect } = require('chai');
+const knex = require('knex');
+const app = require('../src/app');
 
 describe('Students endpoint', () => {
   before('connection to database', () => {
     db = knex({
       client: 'pg',
       connection: process.env.TEST_DATABASE_URL
-    })
-    app.set('db', db)
-  })
+    });
+    app.set('db', db);
+  });
 
 
   after('disconnect from db', () => {
-    return db.destroy()
-  })
+    return db.destroy();
+  });
 
-  before('clean the table', () => db.raw('TRUNCATE students, teachers RESTART IDENTITY CASCADE'))
+  before('clean the table', () => db.raw('TRUNCATE students, teachers RESTART IDENTITY CASCADE'));
 
   const testCourses = [
     {
@@ -37,7 +37,7 @@ describe('Students endpoint', () => {
       category: 'Math',
       teacher_id: 2
     },
-  ]
+  ];
   const testTeachers = [
     {
       id: 1,
@@ -54,21 +54,21 @@ describe('Students endpoint', () => {
       first_name: 'Chris',
       last_name: 'Wickson'
     },
-  ]
+  ];
 
-  afterEach('cleanup', () => db.raw('TRUNCATE students RESTART IDENTITY CASCADE'))
+  afterEach('cleanup', () => db.raw('TRUNCATE students RESTART IDENTITY CASCADE'));
 
   before('insert teachers', () => {
     return db
       .into('teachers')
       .insert(testTeachers)
-  })
+  });
 
   before('insert courses', () => {
     return db
       .into('courses')
       .insert(testCourses)
-  })
+  });
 
   describe('GET /api/students', () => {
     context('Given there are no data', () => {
@@ -76,8 +76,8 @@ describe('Students endpoint', () => {
         return supertest(app)
           .get('/api/students')
           .expect(200, [])
-      })
-    })
+      });
+    });
 
     context('Given there are data in the students table', () => {
       const testStudents = [
@@ -102,21 +102,21 @@ describe('Students endpoint', () => {
           course_id: 1,
           grade: 'A'
         },
-      ]
+      ];
 
       beforeEach('insert students', () => {
         return db
           .into('students')
           .insert(testStudents)
-      })
+      });
 
       it('responds with 200 and with all students', () => {
         return supertest(app)
           .get('/api/students')
           .expect(200, testStudents)
-      })
-    })
-  })
+      });
+    });
+  });
 
   describe('POST /api/students', () => {
     it('creates a student responding with 201 and the new student', function () {
@@ -136,9 +136,9 @@ describe('Students endpoint', () => {
           expect(res.body.course_id).to.eql(newStudent.course_id)
           expect(res.body.grade).to.eql(newStudent.grade)
           expect(res.body).to.have.property('id')
-        })
-    })
-  })
+        });
+    });
+  });
   describe('DELETE /api/students/:id', () => {
     context('Given there are no students', () => {
       it('responds with 404', () => {
@@ -146,8 +146,8 @@ describe('Students endpoint', () => {
         return supertest(app)
           .delete(`/api/students/${studentId}`)
           .expect(404, { error: { message: 'Student does not exist' } })
-      })
-    })
+      });
+    });
     context('Given there are students in the database', () => {
       const testStudents = [
         {
@@ -171,13 +171,13 @@ describe('Students endpoint', () => {
           course_id: 1,
           grade: 'A'
         },
-      ]
+      ];
 
       beforeEach('insert students', () => {
         return db
           .into('students')
           .insert(testStudents)
-      })
+      });
 
       it('responds with 204 and removes the student', () => {
         const idToRemove = 2
@@ -189,8 +189,8 @@ describe('Students endpoint', () => {
             supertest(app)
               .get('/api/students')
               .expect(expectedStudent)
-          )
-      })
-    })
-  })
-})
+          );
+      });
+    });
+  });
+});

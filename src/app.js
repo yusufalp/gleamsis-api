@@ -21,18 +21,18 @@ app.use('/api/students', studentsRouter);
 app.use('/api/courses', coursesRouter);
 
 app.get('/', (req, res) => {
-  res.send('Hello, GleamSIS!')
+  res.send('Hello, GleamSIS!');
 })
 
 app.use(function errorHandler(error, req, res, next) {
-  let response
+  let response;
   if (NODE_ENV === 'production') {
     response = { error: { message: 'server error' } }
   } else {
-    console.error(error)
-    response = { message: error.message, error }
+    console.error(error);
+    response = { message: error.message, error };
   }
-  res.status(500).json(response)
+  res.status(500).json(response);
 })
 
 module.exports = app;
